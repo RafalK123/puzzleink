@@ -1,18 +1,14 @@
 export async function onRequest(context) {
-  const path = new URL(context.request.url).pathname;
+  const slug = context.params.slug;
 
-  // Sprawdzenie czy ścieżka pasuje do /free-coloring/<slug>
-  const slugMatch = path.match(/^\/free-coloring\/([^\/]+)\/?$/);
-
-  if (!slugMatch) {
-    // jeśli to nie slug, zwróć galerię
+  // Jeśli slug jest pusty lub "free-coloring", zwracamy galerię
+  if (!slug || slug.toLowerCase() === "free-coloring") {
     const url = new URL(context.request.url);
     url.pathname = "/free-coloring/index.html";
     return context.env.ASSETS.fetch(url.toString());
   }
 
-  const slug = slugMatch[1];
-
+  // W przeciwnym razie przekierowujemy do slug.html
   const url = new URL(context.request.url);
   url.pathname = "/free-coloring/slug.html";
   url.searchParams.set("file", slug);
