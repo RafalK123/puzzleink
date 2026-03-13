@@ -1,17 +1,21 @@
 export async function onRequest(context) {
-  const slug = context.params.slug;
+  const url = new URL(context.request.url);
+  const pathSegments = url.pathname.split('/').filter(Boolean);
+  
+  // Pobieramy ostatni element ścieżki jako slug
+  const slug = pathSegments[pathSegments.length - 1];
 
-  if (!slug || slug.toLowerCase() === "free-coloring") {
-    const url = new URL(context.request.url);
-    url.pathname = "/free-coloring/index.html";
-    return context.env.ASSETS.fetch(url.toString());
+  // Jeśli jesteśmy na głównej stronie galerii
+  if (!slug || slug === "free-coloring") {
+    const newUrl = new URL(context.request.url);
+    newUrl.pathname = "/free-coloring/index.html";
+    return context.env.ASSETS.fetch(newUrl);
   }
 
-  // fetch slug.html, ale bez ?file=slug
-  const url = new URL(context.request.url);
-  url.pathname = "/free-coloring/slug.html";
+  // Dla każdego innego adresu w tej podścieżce serwujemy slug.html
+  // System ASSETS Cloudflare Pages pobierze fizyczny plik /free-coloring/slug.html
+  const rewriteUrl = new URL(context.request.url);
+  rewriteUrl.pathname = "/free-coloring/slug.html";
 
-  const newRequest = new Request(url.toString(), context.request);
-
-  return context.env.ASSETS.fetch(newRequest);
+  return context.env.ASSETS.fetch(rewriteUrl);
 }
