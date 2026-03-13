@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title id="seoTitle">Coloring Page</title>
+<meta id="metaDesc" name="description" content="Free printable coloring page.">
+
+<style>
+
+body{
+    font-family: Arial;
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    text-align: center;
+}
+
+canvas{
+    width:100%;
+    margin:20px 0;
+    border:1px solid #ddd;
+    box-shadow:0 4px 12px rgba(0,0,0,0.1);
+}
+
+.buttons{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    margin-top:10px;
+    flex-wrap: wrap;
+}
+
+button{
+    font-size:18px;
+    padding:12px 24px;
+    cursor:pointer;
+    background:#1a73e8;
+    color:white;
+    border:none;
+    border-radius:5px;
+}
+
+button.secondary{
+    background:#2e7d32;
+}
+
+.back{
+    display:block;
+    margin-bottom:20px;
+    text-decoration:none;
+    color:#666;
+}
+
+.more{
+    margin-top:30px;
+    font-size:18px;
+}
+
+.more a{
+    color:#1a73e8;
+    font-weight:bold;
+    text-decoration:none;
+}
+
+.more a:hover{
+    text-decoration:underline;
+}
+
+.description{
+    margin-top:20px;
+    font-size:17px;
+    line-height:1.6;
+    color:#444;
+}
+
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
+</head>
+<body>
+
+<a href="/free-coloring/" class="back">← Back to Gallery</a>
+
+<h1 id="title">Coloring Page</h1>
+
+<div class="buttons">
+    <button id="downloadPdf">DOWNLOAD PDF</button>
+    <button id="downloadJpg" class="secondary">DOWNLOAD JPG</button>
+</div>
+
+<div id="description" class="description"></div>
+
+<div class="more">
+Discover more free printable coloring pages 👉
+<a href="/free-coloring/">Browse the full gallery</a>
+</div>
+
+<!-- PODGLĄD OBRAZKA NA SAMYM DOLE -->
+<canvas id="preview"></canvas>
+
+<script>
+
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+const params = new URLSearchParams(window.location.search);
+const slug = params.get("file");
+
+if(!slug){
+    location.href="/free-coloring/";
+}
+
+const file = slug + ".pdf";
+
+const titleText = slug
+    .replace(/-/g," ")
+    .replace(/\b\w/g,l=>l.toUpperCase());
+
+document.getElementById("title").textContent =
+    titleText + " Coloring Page";
+
+document.title =
+    titleText + " – Free Printable PDF";
+
+document.getElementById("metaDesc").content =
+    "Download this " + titleText.toLowerCase() +
+    " coloring page printable PDF.";
+
+document.getElementById("description").innerText =
+    "This free printable " + titleText +
+    " Coloring Page is perfect for kids, preschool activities and Easter crafts. " +
+    "Download the printable PDF or JPG and start coloring!";
+
+const url = "https://files.puzzleink.org/" + file;
+
+/* DOWNLOAD PDF */
+
+document.getElementById("downloadPdf").onclick = async ()=>{
+    const btn=document.getElementById("downloadPdf");
+    const originalText=btn.textContent;
+    btn.textContent="Downloading...";
+    btn.disabled=true;
+
+    try{
+        const response=await fetch(url);
+        const blob=await response.blob();
+        const blobUrl=window.URL.createObjectURL(blob);
+        const a=document.createElement("a");
+        a.href=blobUrl;
+        a.download=file;
+        a.click();
+        window.URL.revokeObjectURL(blobUrl);
+    }catch(err){
+        window.open(url,'_blank');
+    }finally{
+        btn.textContent=originalText;
+        btn.disabled=false;
+    }
+};
+
+/* DOWNLOAD JPG */
+
+document.getElementById("downloadJpg").onclick = ()=>{
+    const canvas=document.getElementById("preview");
+    const jpg=canvas.toDataURL("image/jpeg",0.95);
+    const a=document.createElement("a");
+    a.href=jpg;
+    a.download=slug + ".jpg";
+    a.click();
+};
+
+/* PDF PREVIEW */
+
+async function preview(){
+    try{
+        const pdf=await pdfjsLib.getDocument(url).promise;
+        const page=await pdf.getPage(1);
+        const viewport=page.getViewport({scale:1.5});
+        const canvas=document.getElementById("preview");
+        canvas.width=viewport.width;
+        canvas.height=viewport.height;
+        await page.render({
+            canvasContext:canvas.getContext("2d"),
+            viewport:viewport
+        }).promise;
+    }catch(e){
+        console.error("Preview error:",e);
+    }
+}
+
+preview();
+
+</script>
+
+</body>
+</html>

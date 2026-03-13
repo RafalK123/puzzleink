@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Free Coloring Pages – Printable PDF</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { font-family: Arial; max-width: 1100px; margin: auto; padding: 20px; }
+        h1 { text-align: center; }
+        .search-container {
+            position: relative;
+            width: 80%;
+            margin: 20px auto;
+        }
+        #search {
+            width: 100%;
+            padding: 10px 30px 10px 10px;
+            font-size: 16px;
+        }
+        #clearSearch {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: #aaa;
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+        }
+        .grid-container { max-height: 800px; overflow-y: auto; border-top:1px solid #ddd; padding-top:10px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
+        .card { text-align: center; border: 1px solid #eee; padding: 10px; border-radius: 8px; }
+        canvas { width: 100%; cursor: pointer; background: #f9f9f9; border-radius: 4px; }
+        a { text-decoration: none; font-weight: bold; display: block; margin-top: 8px; color: #1a73e8; }
+        #loadMore { display: block; margin: 20px auto; padding: 10px 20px; font-size: 16px; cursor: pointer; border: none; border-radius: 5px; background: #1a73e8; color: white; }
+        #loadMore:disabled { background: #aaa; cursor: default; }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+</head>
+<body>
+
+<h1>Free Coloring Pages</h1>
+<p style="text-align:center">
+  Browse our collection of free printable coloring pages in PDF format. 
+  Find more fun on <a href="https://puzzleink.org" target="_blank" rel="noopener">www.puzzleink.org</a>
+</p>
+
+<div class="search-container">
+    <input type="text" id="search" placeholder="Search coloring pages…">
+    <button id="clearSearch">×</button>
+</div>
+
+<div class="grid-container">
+    <div class="grid" id="grid"></div>
+</div>
+<button id="loadMore">Load More</button>
+
+<script>
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+function formatTitle(name) {
+    name = name.replace(".pdf", "").replace(/-/g, " ");
+    return name.replace(/\b\w/g, l => l.toUpperCase());
+}
+
+let allFiles = [];
+let filteredFiles = [];
+let itemsPerPage = 20;
+let currentIndex = 0;
+
+async function load() {
+    try {
+        const res = await fetch("/api/colorings");
+        const files = await res.json();
+        allFiles = files;
+        filteredFiles = files;
+        currentIndex = 0;
+        renderGrid();
+    } catch (err) {
+        console.error("Błąd ładowania listy:", err);
+    }
+}
+
+function renderGrid() {
+    const grid = document.getElementById("grid");
+    if (currentIndex === 0) grid.innerHTML = "";
+
+    const nextItems = filteredFiles.slice(currentIndex, currentIndex + itemsPerPage);
+
+    for (const file of nextItems) {
+        const slug = file.replace(".pdf", "");
+        const title = formatTitle(file);
+        const url = "/free-coloring/" + slug;
+
+        const card = document.createElement("div");
+        card.className = "card";
+
+        const canvas = document.createElement("canvas");
+        canvas.onclick = () => location.href = url;
+
+        const link = document.createElement("a");
+        link.href = url;
+        link.textContent = title;
+
+        card.appendChild(canvas);
+        card.appendChild(link);
+        grid.appendChild(card);
+
+        generateThumb(file, canvas);
+    }
+
+    currentIndex += nextItems.length;
+
+    const loadMoreBtn = document.getElementById("loadMore");
+    if (currentIndex >= filteredFiles.length) {
+        loadMoreBtn.disabled = true;
+        loadMoreBtn.textContent = "No more results";
+    } else {
+        loadMoreBtn.disabled = false;
+        loadMoreBtn.textContent = "Load More";
+    }
+}
+
+async function generateThumb(file, canvas) {
+    const url = "https://files.puzzleink.org/" + file;
+    try {
+        const pdf = await pdfjsLib.getDocument({url: url, disableRange: true, disableStream: true}).promise;
+        const page = await pdf.getPage(1);
+        const viewport = page.getViewport({ scale: 0.8 });
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+        await page.render({
+            canvasContext: canvas.getContext("2d"),
+            viewport: viewport
+        }).promise;
+    } catch (e) {
+        console.error("Błąd PDF (" + file + "):", e);
+    }
+}
+
+// SEARCH
+document.getElementById("search").addEventListener("input", e => {
+    const query = e.target.value.toLowerCase();
+    filteredFiles = allFiles.filter(f => f.toLowerCase().includes(query));
+    currentIndex = 0;
+    renderGrid();
+});
+
+// CLEAR SEARCH
+document.getElementById("clearSearch").addEventListener("click", () => {
+    const input = document.getElementById("search");
+    input.value = "";
+    filteredFiles = allFiles;
+    currentIndex = 0;
+    renderGrid();
+});
+
+// LOAD MORE
+document.getElementById("loadMore").addEventListener("click", () => {
+    renderGrid();
+});
+
+load();
+</script>
+</body>
+</html>
