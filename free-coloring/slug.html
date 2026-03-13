@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -9,7 +8,6 @@
 <meta id="metaDesc" name="description" content="Free printable coloring page.">
 
 <style>
-
 body{
     font-family: Arial;
     max-width: 800px;
@@ -75,7 +73,6 @@ button.secondary{
     line-height:1.6;
     color:#444;
 }
-
 </style>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -103,12 +100,12 @@ Discover more free printable coloring pages 👉
 <canvas id="preview"></canvas>
 
 <script>
-
 pdfjsLib.GlobalWorkerOptions.workerSrc =
 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-const params = new URLSearchParams(window.location.search);
-const slug = params.get("file");
+// Odczyt slug z pathname zamiast query param
+const pathParts = window.location.pathname.split("/");
+const slug = pathParts[pathParts.length - 1];
 
 if(!slug){
     location.href="/free-coloring/";
@@ -138,7 +135,6 @@ document.getElementById("description").innerText =
 const url = "https://files.puzzleink.org/" + file;
 
 /* DOWNLOAD PDF */
-
 document.getElementById("downloadPdf").onclick = async ()=>{
     const btn=document.getElementById("downloadPdf");
     const originalText=btn.textContent;
@@ -163,7 +159,6 @@ document.getElementById("downloadPdf").onclick = async ()=>{
 };
 
 /* DOWNLOAD JPG */
-
 document.getElementById("downloadJpg").onclick = ()=>{
     const canvas=document.getElementById("preview");
     const jpg=canvas.toDataURL("image/jpeg",0.95);
@@ -174,7 +169,6 @@ document.getElementById("downloadJpg").onclick = ()=>{
 };
 
 /* PDF PREVIEW */
-
 async function preview(){
     try{
         const pdf=await pdfjsLib.getDocument(url).promise;
@@ -193,7 +187,6 @@ async function preview(){
 }
 
 preview();
-
 </script>
 
 </body>
