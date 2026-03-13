@@ -92,16 +92,16 @@ function renderGrid() {
     for (const file of nextItems) {
         const slug = file.replace(".pdf", "");
         const title = formatTitle(file);
-        const url = "/free-coloring/" + slug; // link do worker + slug
+        const url = "/free-coloring/slug.html?file=" + slug;
 
         const card = document.createElement("div");
         card.className = "card";
 
         const canvas = document.createElement("canvas");
-        canvas.onclick = () => location.href = url; // klik w podgląd
+        canvas.onclick = () => location.href = url;
 
         const link = document.createElement("a");
-        link.href = url; // klik w link
+        link.href = url;
         link.textContent = title;
 
         card.appendChild(canvas);
