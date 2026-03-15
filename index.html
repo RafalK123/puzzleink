@@ -10,930 +10,977 @@
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;0,9..144,900;1,9..144,400&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
   <link rel="icon" href="images/favicon_white.png" type="image/png">
   <style>
-    :root {
-      --sun: #FFD93D;
-      --coral: #FF6B6B;
-      --mint: #6BCB77;
-      --sky: #4ECDC4;
-      --ink: #1A1A2E;
-      --cream: #FFFBF0;
-      --lavender: #C77DFF;
-      --peach: #FFB347;
-    }
+      :root {
+        --sun: #FFD93D;
+        --coral: #FF6B6B;
+        --mint: #6BCB77;
+        --sky: #4ECDC4;
+        --ink: #1A1A2E;
+        --cream: #FFFBF0;
+        --lavender: #C77DFF;
+        --peach: #FFB347;
+      }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    html { scroll-behavior: smooth; }
+      html { scroll-behavior: smooth; }
 
-    body {
-      font-family: 'Nunito', sans-serif;
-      background-color: var(--cream);
-      color: var(--ink);
-      overflow-x: hidden;
-    }
+      body {
+        font-family: 'Nunito', sans-serif;
+        background-color: var(--cream);
+        color: var(--ink);
+        overflow-x: hidden;
+      }
 
-    /* ── NOISE OVERLAY ── */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 9999;
-      opacity: 0.4;
-    }
+      /* ── NOISE OVERLAY ── */
+      body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+        pointer-events: none;
+        z-index: 9999;
+        opacity: 0.4;
+      }
 
-    /* ── NAV ── */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1.2rem 2.5rem;
-      background: rgba(255,251,240,0.85);
-      backdrop-filter: blur(12px);
-      border-bottom: 2px solid var(--ink);
-    }
+      /* ── NAV ── */
+      .nav-logo {
+        display: flex;
+        flex-direction: row; /* logo nad tekstem */
+        align-items: center;
+        gap: 4px; /* odstęp między logo a tekstem */
+      }
 
-    .nav-logo {
-      font-family: 'Fraunces', serif;
-      font-weight: 900;
-      font-size: 1.5rem;
-      color: var(--ink);
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
+      .nav-logo-img {
+        max-height: 50px; /* dopasowuje się do wysokości paska */
+        width: auto;
+      }
+      nav {
+        position: fixed;
+        top: 0; left: 0; right: 0;
+        z-index: 100;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.2rem 2.5rem;
+        background: rgba(255,251,240,0.85);
+        backdrop-filter: blur(12px);
+        border-bottom: 2px solid var(--ink);
+      }
 
-    .nav-logo span.dot {
-      display: inline-block;
-      width: 12px; height: 12px;
-      border-radius: 50%;
-      background: var(--coral);
-      animation: dotPulse 2s ease-in-out infinite;
-    }
+      .nav-logo {
+        font-family: 'Fraunces', serif;
+        font-weight: 900;
+        font-size: 1.5rem;
+        color: var(--ink);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
 
-    @keyframes dotPulse {
-      0%, 100% { transform: scale(1); background: var(--coral); }
-      33% { transform: scale(1.3); background: var(--sun); }
-      66% { transform: scale(1.1); background: var(--mint); }
-    }
+      .nav-logo span.dot {
+        display: inline-block;
+        width: 12px; height: 12px;
+        border-radius: 50%;
+        background: var(--coral);
+        animation: dotPulse 2s ease-in-out infinite;
+      }
 
-    .nav-links { display: flex; gap: 2rem; list-style: none; }
-    .nav-links a {
-      font-weight: 800;
-      font-size: 0.85rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--ink);
-      text-decoration: none;
-      position: relative;
-      padding-bottom: 2px;
-    }
-    .nav-links a::after {
-      content: '';
-      position: absolute;
-      bottom: -2px; left: 0;
-      width: 0; height: 2px;
-      background: var(--coral);
-      transition: width 0.3s ease;
-    }
-    .nav-links a:hover::after { width: 100%; }
+      @keyframes dotPulse {
+        0%, 100% { transform: scale(1); background: var(--coral); }
+        33% { transform: scale(1.3); background: var(--sun); }
+        66% { transform: scale(1.1); background: var(--mint); }
+      }
 
-    /* ── HERO ── */
+      .nav-links { display: flex; gap: 2rem; list-style: none; }
+      .nav-links a {
+        font-weight: 800;
+        font-size: 0.85rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--ink);
+        text-decoration: none;
+        position: relative;
+        padding-bottom: 2px;
+      }
+      .nav-links a::after {
+        content: '';
+        position: absolute;
+        bottom: -2px; left: 0;
+        width: 0; height: 2px;
+        background: var(--coral);
+        transition: width 0.3s ease;
+      }
+      .nav-links a:hover::after { width: 100%; }
 
-	.hero {
-	  min-height: 100vh;
-	  display: flex;
-	  align-items: center;
-	  position: relative;
-	  overflow: hidden;
-	  padding: 8rem 2rem 4rem;
-	}
+      /* ── HERO ── */
 
-	.hero-inner {
-	  max-width: 1200px;
-	  margin: 0 auto;
-	  width: 100%;
-    text-align: center;
-
-	  display: grid;
-	  grid-template-columns: 1fr 1fr;
-	  gap: 4rem;
-	  align-items: center;
-	}
-
-    .hero-bg-blobs {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-.blob {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.35;
-}
-.blob-1 { width: 500px; height: 500px; background: var(--sun); top: -100px; right: -100px; animation: float1 8s ease-in-out infinite; }
-.blob-2 { width: 350px; height: 350px; background: var(--sky); bottom: 50px; left: -80px; animation: float2 10s ease-in-out infinite; }
-.blob-3 { width: 250px; height: 250px; background: var(--coral); top: 40%; right: 30%; animation: float3 7s ease-in-out infinite; }
-.blob-4 { width: 300px; height: 300px; background: var(--mint); bottom: -120px; right: 10%; animation: float2 9s ease-in-out infinite; }
-.blob-5 { width: 300px; height: 300px; background: var(--lavender); top: -120px; left: 15%; animation: float2 9s ease-in-out infinite; }
-
-    @keyframes float1 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(-30px,20px) scale(1.05)} }
-    @keyframes float2 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(20px,-25px) scale(1.08)} }
-    @keyframes float3 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(15px,15px)} }
-
-    .hero-text { position: relative; z-index: 1; }
-
-    .hero-badge {
-      display: inline-block;
-      background: var(--ink);
-      color: var(--sun);
-      font-size: 0.75rem;
-      font-weight: 800;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      padding: 0.4rem 1rem;
-      border-radius: 999px;
-      margin-bottom: 1.5rem;
-      animation: fadeUp 0.6s ease both;
-    }
-
-    .hero-title {
-      font-family: 'Fraunces', serif;
-      font-size: clamp(3rem, 6vw, 5.5rem);
-      font-weight: 900;
-      line-height: 1.0;
-      margin-bottom: 1.5rem;
-      animation: fadeUp 0.6s 0.1s ease both;
-    }
-
-    .hero-title .highlight {
-      position: relative;
-      display: inline-block;
-      color: var(--coral);
-    }
-    .hero-title .highlight::after {
-      content: '';
-      position: absolute;
-      bottom: 4px; left: 0; right: 0;
-      height: 6px;
-      background: var(--sun);
-      z-index: -1;
-      border-radius: 3px;
-    }
-
-    .hero-sub {
-      font-size: 1.15rem;
-      line-height: 1.7;
-      color: #444;
-      max-width: 480px;
-      margin: 0 auto 2.5rem;
-      animation: fadeUp 0.6s 0.2s ease both;
-    }
-
-    .hero-cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.75rem;
-      background: var(--ink);
-      color: var(--cream);
-      font-weight: 800;
-      font-size: 1rem;
-      padding: 1rem 2rem;
-      border-radius: 999px;
-      text-decoration: none;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      box-shadow: 4px 4px 0 var(--coral);
-      animation: fadeUp 0.6s 0.3s ease both;
-    }
-    .hero-cta:hover {
-      transform: translate(-2px, -2px);
-      box-shadow: 6px 6px 0 var(--coral);
-    }
-
-    .hero-visual {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      animation: fadeUp 0.8s 0.2s ease both;
-    }
-
-	.book-mockup {
-	  width: 320px;
-	  height: 420px;
-	  background: white;
-	  border-radius: 12px;
-	  box-shadow: 25px 25px 0 var(--sun); 
-	  position: relative;
-	  overflow: hidden;
-	  border: 2px solid var(--ink);
-	  transition: transform 0.4s ease;
-	}
-    .book-mockup:hover { transform: rotate(-2deg) scale(1.03); }
-
-    .book-cover-art {
-      width: 100%; height: 55%;
-      background: linear-gradient(135deg, #FFE8A3 0%, #FFB347 50%, #FF6B6B 100%);
+    .hero {
+      min-height: 100vh;
       display: flex;
       align-items: center;
-      justify-content: center;
-      font-size: 5rem;
       position: relative;
       overflow: hidden;
+      padding: 8rem 2rem 4rem;
     }
 
-    .book-cover-art::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(circle at 30% 70%, rgba(255,255,255,0.3) 0%, transparent 60%);
-    }
-
-    .book-spine {
-      position: absolute;
-      left: 0; top: 0; bottom: 0;
-      width: 4px;
-      background: var(--ink);
-    }
-	
-	.thumb-img {
-	  margin-left: 0 !important;
-	}
-	
-    .book-info {
-      padding: 1rem 1.2rem 1rem 1.5rem;
-    }
-    .book-info .book-label {
-      font-size: 0.65rem;
-      font-weight: 800;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--coral);
-      margin-bottom: 0.4rem;
-    }
-    .book-info h3 {
-      font-family: 'Fraunces', serif;
-      font-size: 0.95rem;
-      font-weight: 700;
-      line-height: 1.3;
-      color: var(--ink);
-    }
-    .book-info .stars {
-      margin-top: 0.5rem;
-      color: var(--sun);
-      font-size: 0.85rem;
-    }
-
-    .floating-emojis {
-      position: absolute;
-      pointer-events: none;
-    }
-    .fe { position: absolute; font-size: 2rem; animation: floatEmoji 4s ease-in-out infinite; }
-    .fe-1 { top: 10%; right: 15%; animation-delay: 0s; }
-    .fe-2 { top: 60%; right: 5%; animation-delay: 1s; font-size: 1.5rem; }
-    .fe-3 { bottom: 10%; right: 35%; animation-delay: 2s; }
-    .fe-4 { top: 20%; left: 5%; animation-delay: 0.5s; font-size: 1.3rem; }
-
-    @keyframes floatEmoji {
-      0%, 100% { transform: translateY(0) rotate(0deg); }
-      50% { transform: translateY(-15px) rotate(8deg); }
-    }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(24px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ── SECTION SHARED ── */
-    section { padding: 6rem 5rem; }
-
-    .section-tag {
-      display: inline-block;
-      font-size: 0.75rem;
-      font-weight: 800;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      padding: 0.35rem 0.9rem;
-      border-radius: 999px;
-      margin-bottom: 1rem;
-    }
-
-    .section-title {
-      font-family: 'Fraunces', serif;
-      font-size: clamp(2.2rem, 4vw, 3.2rem);
-      font-weight: 900;
-      line-height: 1.1;
-      margin-bottom: 1rem;
-    }
-
-    /* ── BOOKS SECTION ── */
-    .book-filters {
-      display: flex;
-      justify-content: center; 
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-
-    .all-btn {
-    font-weight: bold;
-    }
-    .filter-btn {
-      display: inline-block;
-      padding: 10px 20px;
-      box-sizing: border-box;
-      background-color: #fff;
-      color: #000;
-      border: 2px solid #000;
-      border-radius: 6px;
-      font-family: inherit;
-      font-size: 16px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      position: relative;
-      z-index: 10;
-      touch-action: manipulation;
-      pointer-events: auto;
-    }
-
-    .filter-btn:hover {
-      background-color: #000;
-      color: #fff;
-    }
-
-    .filter-btn.active {
-      background-color: #000;
-      color: #fff;
-    }
-
-    .sub-filters {
-      display: none;
-      margin-top: 10px;
-      justify-content: center;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-
-    .sub-filter-btn {
-      display: inline-block;
-      padding: 8px 16px;
-      font-size: 14px;
-      cursor: pointer;
-      background-color: #fff;
-      color: #000;
-      border: 1px solid #000;
-      border-radius: 5px;
-    }
-
-    .sub-filter-btn.active {
-      background-color: #000;
-      color: #fff;
-    }
-
-    .sub-sub-filters {
-      display: none;
-      justify-content: center;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-
-    .sub-sub-filter-btn {
-      display: inline-block;
-      padding: 6px 14px;
-      font-size: 13px;
-      cursor: pointer;
-      background-color: #fff;
-      color: #000;
-      border: 1px solid #000;
-      border-radius: 5px;
-    }
-
-    .sub-sub-filter-btn.active {
-      background-color: #000;
-      color: #fff;
-    }
-
-    #books {
-      background: var(--ink);
-      color: var(--cream);
-      position: relative;
-      overflow: hidden;
-    }
-
-    #books::before {
-      content: '';
-      position: absolute;
-      top: -60px; left: -60px;
-      width: 300px; height: 300px;
-      border-radius: 50%;
-      background: var(--lavender);
-      opacity: 0.12;
-      filter: blur(60px);
-    }
-
-    .books-header { 
-      margin-bottom: 3rem;
+    .hero-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
       text-align: center;
+
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+      .hero-bg-blobs {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.35;
+  }
+  .blob-1 { width: 500px; height: 500px; background: var(--sun); top: -100px; right: -100px; animation: float1 8s ease-in-out infinite; }
+  .blob-2 { width: 350px; height: 350px; background: var(--sky); bottom: 50px; left: -80px; animation: float2 10s ease-in-out infinite; }
+  .blob-3 { width: 250px; height: 250px; background: var(--coral); top: 40%; right: 30%; animation: float3 7s ease-in-out infinite; }
+  .blob-4 { width: 300px; height: 300px; background: var(--mint); bottom: -120px; right: 10%; animation: float2 9s ease-in-out infinite; }
+  .blob-5 { width: 300px; height: 300px; background: var(--lavender); top: -120px; left: 15%; animation: float2 9s ease-in-out infinite; }
+
+      @keyframes float1 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(-30px,20px) scale(1.05)} }
+      @keyframes float2 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(20px,-25px) scale(1.08)} }
+      @keyframes float3 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(15px,15px)} }
+
+      .hero-text { position: relative; z-index: 1; }
+
+      .hero-badge {
+        display: inline-block;
+        background: var(--ink);
+        color: var(--sun);
+        font-size: 0.75rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        padding: 0.4rem 1rem;
+        border-radius: 999px;
+        margin-bottom: 1.5rem;
+        animation: fadeUp 0.6s ease both;
+      }
+
+      .hero-title {
+        font-family: 'Fraunces', serif;
+        font-size: clamp(3rem, 6vw, 5.5rem);
+        font-weight: 900;
+        line-height: 1.0;
+        margin-bottom: 1.5rem;
+        animation: fadeUp 0.6s 0.1s ease both;
+      }
+
+      .hero-title .highlight {
+        position: relative;
+        display: inline-block;
+        color: var(--coral);
+      }
+      .hero-title .highlight::after {
+        content: '';
+        position: absolute;
+        bottom: 4px; left: 0; right: 0;
+        height: 6px;
+        background: var(--sun);
+        z-index: -1;
+        border-radius: 3px;
+      }
+
+      .hero-sub {
+        font-size: 1.15rem;
+        line-height: 1.7;
+        color: #444;
+        max-width: 480px;
+        margin: 0 auto 2.5rem;
+        animation: fadeUp 0.6s 0.2s ease both;
+      }
+
+      .hero-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        background: var(--ink);
+        color: var(--cream);
+        font-weight: 800;
+        font-size: 1rem;
+        padding: 1rem 2rem;
+        border-radius: 999px;
+        text-decoration: none;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        box-shadow: 4px 4px 0 var(--coral);
+        animation: fadeUp 0.6s 0.3s ease both;
+      }
+      .hero-cta:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 6px 6px 0 var(--coral);
+      }
+
+      .hero-visual {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        animation: fadeUp 0.8s 0.2s ease both;
+      }
+
+      .hero-label{
+        font-size:0.75rem;
+        letter-spacing:0.18em;
+        text-transform:uppercase;
+        opacity:0.7;
+        margin-bottom:14px;
+      }
+
+    .book-mockup {
+      width: 320px;
+      height: 420px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 25px 25px 0 var(--sun); 
+      position: relative;
+      overflow: hidden;
+      border: 2px solid var(--ink);
+      transition: transform 0.4s ease;
+    }
+      .book-mockup:hover { transform: rotate(-2deg) scale(1.03); }
+
+      .book-cover-art {
+        width: 100%; height: 55%;
+        background: linear-gradient(135deg, #FFE8A3 0%, #FFB347 50%, #FF6B6B 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 5rem;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .book-cover-art::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at 30% 70%, rgba(255,255,255,0.3) 0%, transparent 60%);
+      }
+
+      .book-spine {
+        position: absolute;
+        left: 0; top: 0; bottom: 0;
+        width: 4px;
+        background: var(--ink);
+      }
+    
+    .thumb-img {
+      margin-left: 0 !important;
+    }
+    
+      .book-info {
+        padding: 1rem 1.2rem 1rem 1.5rem;
+      }
+      .book-info .book-label {
+        font-size: 0.65rem;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--coral);
+        margin-bottom: 0.4rem;
+      }
+      .book-info h3 {
+        font-family: 'Fraunces', serif;
+        font-size: 0.95rem;
+        font-weight: 700;
+        line-height: 1.3;
+        color: var(--ink);
+      }
+      .book-info .stars {
+        margin-top: 0.5rem;
+        color: var(--sun);
+        font-size: 0.85rem;
+      }
+
+      .floating-emojis {
+        position: absolute;
+        pointer-events: none;
+      }
+      .fe { position: absolute; font-size: 2rem; animation: floatEmoji 4s ease-in-out infinite; }
+      .fe-1 { top: 10%; right: 15%; animation-delay: 0s; }
+      .fe-2 { top: 60%; right: 5%; animation-delay: 1s; font-size: 1.5rem; }
+      .fe-3 { bottom: 10%; right: 35%; animation-delay: 2s; }
+      .fe-4 { top: 20%; left: 5%; animation-delay: 0.5s; font-size: 1.3rem; }
+
+      @keyframes floatEmoji {
+        0%, 100% { transform: translateY(0) rotate(0deg); }
+        50% { transform: translateY(-15px) rotate(8deg); }
+      }
+
+      @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(24px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      /* ── SECTION SHARED ── */
+      section { padding: 6rem 5rem; }
+
+      .section-tag {
+        display: inline-block;
+        font-size: 0.75rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        padding: 0.35rem 0.9rem;
+        border-radius: 999px;
+        margin-bottom: 1rem;
+      }
+
+      .section-title {
+        font-family: 'Fraunces', serif;
+        font-size: clamp(2.2rem, 4vw, 3.2rem);
+        font-weight: 900;
+        line-height: 1.1;
+        margin-bottom: 1rem;
+      }
+
+      /* ── BOOKS SECTION ── */
+      .book-filters {
+        display: flex;
+        justify-content: center; 
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      .all-btn {
+      font-weight: bold;
+      }
+      .filter-btn {
+        display: inline-block;
+        padding: 10px 20px;
+        box-sizing: border-box;
+        background-color: #fff;
+        color: #000;
+        border: 2px solid #000;
+        border-radius: 6px;
+        font-family: inherit;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        position: relative;
+        z-index: 10;
+        touch-action: manipulation;
+        pointer-events: auto;
+      }
+
+      .filter-btn:hover {
+        background-color: #000;
+        color: #fff;
+      }
+
+      .filter-btn.active {
+        background-color: #000;
+        color: #fff;
+      }
+
+      .sub-filters {
+        display: none;
+        margin-top: 10px;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      .sub-filter-btn {
+        display: inline-block;
+        padding: 8px 16px;
+        font-size: 14px;
+        cursor: pointer;
+        background-color: #fff;
+        color: #000;
+        border: 1px solid #000;
+        border-radius: 5px;
+      }
+
+      .sub-filter-btn.active {
+        background-color: #000;
+        color: #fff;
+      }
+
+      .sub-sub-filters {
+        display: none;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      .sub-sub-filter-btn {
+        display: inline-block;
+        padding: 6px 14px;
+        font-size: 13px;
+        cursor: pointer;
+        background-color: #fff;
+        color: #000;
+        border: 1px solid #000;
+        border-radius: 5px;
+      }
+
+      .sub-sub-filter-btn.active {
+        background-color: #000;
+        color: #fff;
+      }
+
+      #books {
+        background: var(--ink);
+        color: var(--cream);
+        position: relative;
+        overflow: hidden;
+      }
+
+      #books::before {
+        content: '';
+        position: absolute;
+        top: -60px; left: -60px;
+        width: 300px; height: 300px;
+        border-radius: 50%;
+        background: var(--lavender);
+        opacity: 0.12;
+        filter: blur(60px);
+      }
+
+      .books-header { 
+        margin-bottom: 3rem;
+        text-align: center;
+        width: 100%;
+        max-width: 1200px;
+        margin-left: auto;
+        margin-right: auto;	
+    }
+      .books-header .section-tag { background: var(--coral); color: white; }
+      .books-header .section-title { color: var(--cream); }
+      .books-header .section-title em { font-style: italic; color: var(--sun); }
+
+      .book-card {
+        background: rgba(255,255,255,0.05);
+        border: 1.5px solid rgba(255,255,255,0.12);
+        border-radius: 20px;
+        overflow: hidden;
+        transition: transform 0.3s ease, border-color 0.3s ease;
+        position: relative;
+      }
+      .book-card:hover {
+        transform: translateY(-8px);
+        border-color: var(--sun);
+      }
+
+      .book-card-thumb {
+        width: 100%;
+        aspect-ratio: 3/4;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      padding: 5%;
+        font-size: 6rem;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .book-card-thumb .thumb-label {
+        position: absolute;
+        bottom: 12px; left: 12px;
+        background: var(--ink);
+        color: var(--sun);
+        font-size: 0.65rem;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        padding: 0.25rem 0.6rem;
+        border-radius: 999px;
+      }
+
+      .coming-soon-badge {
+        position: absolute;
+        top: 12px; right: 12px;
+        background: var(--coral);
+        color: white;
+        font-size: 0.65rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 0.3rem 0.7rem;
+        border-radius: 999px;
+      }
+
+      .book-card-body { padding: 1.4rem; }
+      .book-card-body .card-genre {
+        font-size: 0.7rem;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--sky);
+        margin-bottom: 0.5rem;
+      }
+      .book-card-body h3 {
+        font-family: 'Fraunces', serif;
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: var(--cream);
+        line-height: 1.35;
+        margin-bottom: 0.5rem;
+      }
+      .book-card-body p {
+        font-size: 0.8rem;
+        color: rgba(255,251,240,0.55);
+        line-height: 1.6;
+        margin-bottom: 1.2rem;
+      }
+
+      .btn-amazon {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: var(--sun);
+        color: var(--ink);
+        font-weight: 800;
+        font-size: 0.85rem;
+        padding: 0.65rem 1.3rem;
+        border-radius: 999px;
+        text-decoration: none;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        box-shadow: 3px 3px 0 rgba(255,255,255,0.2);
+      }
+      .btn-amazon:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 5px 5px 0 rgba(255,255,255,0.2);
+      }
+
+      .btn-amazon.disabled {
+        background: rgba(255,255,255,0.1);
+        color: rgba(255,251,240,0.4);
+        cursor: not-allowed;
+        box-shadow: none;
+        pointer-events: none;
+      }
+
+      /* ── ABOUT ── */
+        #about {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          align-items: center;
+          max-width: 1100px;
+          margin: 0 auto;
+          padding: 4rem 1rem;
+          min-height: 80vh;
+  }
+
+        .about-visual {
+          display: flex;
+          justify-content: center;
+        }
+
+      .about-avatar {
+        width: 100%;
+        max-width: 300px;
+        aspect-ratio: 1;
+        border-radius: 40% 60% 55% 45% / 45% 45% 55% 55%;
+        background: linear-gradient(135deg, var(--sun) 0%, var(--peach) 50%, var(--coral) 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 7rem;
+        border: 3px solid var(--ink);
+        box-shadow: 8px 8px 0 var(--ink);
+        animation: morphBlob 8s ease-in-out infinite;
+        position: relative;
+      }
+
+      @keyframes morphBlob {
+        0%, 100% { border-radius: 40% 60% 55% 45% / 45% 45% 55% 55%; }
+        33% { border-radius: 55% 45% 40% 60% / 60% 55% 45% 40%; }
+        66% { border-radius: 60% 40% 60% 40% / 40% 60% 40% 60%; }
+      }
+
+      .about-decoration {
+        position: absolute;
+        bottom: -20px; right: -20px;
+        width: 120px; height: 120px;
+        border-radius: 50%;
+        background: var(--mint);
+        border: 3px solid var(--ink);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5rem;
+        box-shadow: 4px 4px 0 var(--ink);
+      }
+
+      .about-text {
+      margin: 0 auto;
+      max-width: 520px;
+    }
+
+      .about-text .section-tag { background: var(--mint); color: var(--ink); }
+      .about-text .section-title { color: var(--ink); }
+      .about-text .section-title em { font-style: italic; color: var(--coral); }
+
+      .about-text p {
+        max-width: 520px;
+        font-size: 1.05rem;
+        line-height: 1.8;
+        color: #444;
+        margin-bottom: 1rem;
+      }
+
+      .about-stats {
+        display: flex;
+        gap: 2rem;
+        margin-top: 2rem;
+      }
+      .stat {
+        text-align: center;
+      }
+      .stat .num {
+        font-family: 'Fraunces', serif;
+        font-size: 2.5rem;
+        font-weight: 900;
+        color: var(--coral);
+        line-height: 1;
+      }
+      .stat .label {
+        font-size: 0.75rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #888;
+        margin-top: 0.25rem;
+      }
+
+      /* ── CONTACT ── */
+      #contact {
+        background: linear-gradient(135deg, var(--sky) 0%, var(--mint) 100%);
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      #contact::before {
+        content: '✉';
+        position: absolute;
+        font-size: 20rem;
+        opacity: 0.06;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+      }
+
+      #contact .section-tag { background: var(--ink); color: var(--cream); }
+      #contact .section-title { color: var(--ink); }
+
+      #contact p {
+        font-size: 1.1rem;
+        color: rgba(26,26,46,0.7);
+        max-width: 500px;
+        margin: 0 auto 2.5rem;
+        line-height: 1.7;
+      }
+
+      .contact-card {
+        display: inline-flex;
+        align-items: center;
+        gap: 1rem;
+        background: var(--ink);
+        color: var(--cream);
+        padding: 1.1rem 2rem;
+        border-radius: 999px;
+        font-weight: 800;
+        font-size: 1rem;
+        text-decoration: none;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        box-shadow: 5px 5px 0 rgba(26,26,46,0.3);
+      }
+      .contact-card:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 7px 7px 0 rgba(26,26,46,0.3);
+      }
+
+      /* ── FOOTER ── */
+      footer {
+        background: var(--ink);
+        color: rgba(255,251,240,0.5);
+        text-align: center;
+        padding: 2rem 5rem;
+        font-size: 0.85rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      footer .footer-brand {
+        font-family: 'Fraunces', serif;
+        font-size: 1.1rem;
+        font-weight: 900;
+        color: var(--cream);
+      }
+
+      footer a { color: var(--sun); text-decoration: none; }
+
+      /* ── SCROLL REVEAL ── */
+      .reveal {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.7s ease, transform 0.7s ease;
+      }
+      .reveal.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* ── RESPONSIVE ── */
+      @media (max-width: 900px) {
+        .hero { grid-template-columns: 1fr; padding: 7rem 2rem 3rem; text-align: center; }
+        .hero-sub { margin: 0 auto 2rem; }
+        .hero-visual { margin-top: 3rem; }
+        section { padding: 4rem 2rem; }
+        #about { grid-template-columns: 1fr; text-align: center; gap: 3rem;}
+        .about-avatar { margin: 0 auto; }
+        .about-stats { justify-content: center; }
+        nav { padding: 1rem 1.5rem; }
+        .nav-links { gap: 1rem; }
+        footer { flex-direction: column; gap: 0.5rem; padding: 1.5rem 2rem; }
+      }
+
+    @media (max-width: 600px) {
+      nav {
+      padding: 1rem 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+      }
+
+      .nav-logo {
+      font-size: 1.2rem;
+      }
+
+      .nav-links {
+      gap: 1rem;
+      }
+
+      .nav-links a {
+      font-size: 0.75rem;
+      }
+    }
+    
+    /* ================= GLOBAL BOOKS SETTINGS (Apart from Media Queries) ================= */
+
+    .my-books-section {
       width: 100%;
       max-width: 1200px;
-      margin-left: auto;
-      margin-right: auto;	
-	}
-    .books-header .section-tag { background: var(--coral); color: white; }
-    .books-header .section-title { color: var(--cream); }
-    .books-header .section-title em { font-style: italic; color: var(--sun); }
+      margin: 0 auto;
+      padding: 0 20px;
+    }
 
     .book-card {
-      background: rgba(255,255,255,0.05);
-      border: 1.5px solid rgba(255,255,255,0.12);
-      border-radius: 20px;
-      overflow: hidden;
-      transition: transform 0.3s ease, border-color 0.3s ease;
-      position: relative;
-    }
-    .book-card:hover {
-      transform: translateY(-8px);
-      border-color: var(--sun);
+      width: 100%;
+      max-width: none; 
+      margin: 0;
     }
 
     .book-card-thumb {
       width: 100%;
-      aspect-ratio: 3/4;
+      aspect-ratio: 3 / 4;
       display: flex;
       align-items: center;
       justify-content: center;
-	  padding: 5%;
-      font-size: 6rem;
-      position: relative;
+      padding: 8%;
+      box-sizing: border-box;
       overflow: hidden;
+      position: relative;
     }
 
-    .book-card-thumb .thumb-label {
-      position: absolute;
-      bottom: 12px; left: 12px;
-      background: var(--ink);
-      color: var(--sun);
-      font-size: 0.65rem;
-      font-weight: 800;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 0.25rem 0.6rem;
-      border-radius: 999px;
+    .book-card-thumb img {
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto;
+      border-radius: 4px;
     }
 
-    .coming-soon-badge {
-      position: absolute;
-      top: 12px; right: 12px;
-      background: var(--coral);
-      color: white;
-      font-size: 0.65rem;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 0.3rem 0.7rem;
-      border-radius: 999px;
+    .thumb-img {
+      margin-left: 0 !important;
     }
 
-    .book-card-body { padding: 1.4rem; }
-    .book-card-body .card-genre {
-      font-size: 0.7rem;
-      font-weight: 800;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--sky);
-      margin-bottom: 0.5rem;
-    }
-    .book-card-body h3 {
-      font-family: 'Fraunces', serif;
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: var(--cream);
-      line-height: 1.35;
-      margin-bottom: 0.5rem;
-    }
-    .book-card-body p {
-      font-size: 0.8rem;
-      color: rgba(255,251,240,0.55);
-      line-height: 1.6;
-      margin-bottom: 1.2rem;
-    }
-
-    .btn-amazon {
-      display: inline-flex;
+    /* ===== BOOK MODAL ===== */
+    .book-modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      z-index: 1000;
+      justify-content: center;
       align-items: center;
-      gap: 0.5rem;
-      background: var(--sun);
-      color: var(--ink);
-      font-weight: 800;
-      font-size: 0.85rem;
-      padding: 0.65rem 1.3rem;
-      border-radius: 999px;
-      text-decoration: none;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      box-shadow: 3px 3px 0 rgba(255,255,255,0.2);
-    }
-    .btn-amazon:hover {
-      transform: translate(-2px, -2px);
-      box-shadow: 5px 5px 0 rgba(255,255,255,0.2);
     }
 
-    .btn-amazon.disabled {
-      background: rgba(255,255,255,0.1);
-      color: rgba(255,251,240,0.4);
-      cursor: not-allowed;
-      box-shadow: none;
-      pointer-events: none;
+    .modal-content {
+      position: relative;
+      max-width: 90%;
+      max-height: 90%;
     }
 
-    /* ── ABOUT ── */
-      #about {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        align-items: center;
-        max-width: 1100px;
-        margin: 0 auto;
-        padding: 4rem 1rem;
-        min-height: 80vh;
-}
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      font-size: 3rem;
+      color: #ffc400;
+      cursor: pointer;
+      z-index: 1001;
+    }
 
-      .about-visual {
-        display: flex;
-        justify-content: center;
+    .modal-gallery {
+      display: flex;
+      overflow: hidden;
+      max-height: 80vh;
+    }
+
+    .modal-slide {
+      display: none;
+      max-width: 100%;
+      max-height: 80vh;
+      margin: auto;
+      object-fit: contain;
+    }
+
+    img {
+      -webkit-user-drag: none;
+      user-select: none;
+    }
+
+    .prev-slide, .next-slide {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.3);
+      border: none;
+      color: #ffc400;
+      font-size: 4rem;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+    }
+
+    .prev-slide { left: 0; }
+    .next-slide { right: 0; }
+
+    /* ================= RESPONSIVE SETTINGS ================= */
+
+      @media (max-width: 900px) {
+        /* HERO */
+        .hero-inner {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        text-align: center;
+        }
+        .hero { padding: 6rem 1.5rem 3rem; }
+        .hero-title { font-size: 2.5rem; }		  
+        .book-mockup { margin: auto; }
       }
 
-    .about-avatar {
+      @media (max-width: 600px) {
+        /* HERO FLEX - vertical */
+        .hero-inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+        }
+        .hero-text {
+        order: 1;
+        text-align: center;
+        max-width: 95%;
+        }
+        .hero-visual {
+        order: 2;
+        max-width: 80%;
+        }
+        .hero-title { font-size: clamp(1.8rem, 8vw, 3rem); }
+      }
+
+    @media (max-width: 500px) {
+      .hero-title { font-size: 2rem; }
+      .hero-sub { font-size: 1rem; }
+      .hero-badge { font-size: 0.8rem; }
+      
+      .books-grid {
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 10px;
+      }
+    }
+
+    .my-books-section {
+      max-width: 1200px;
+      margin-left: auto !important;
+      margin-right: auto !important;
+      padding: 0 20px;
       width: 100%;
-      max-width: 300px;
-      aspect-ratio: 1;
-      border-radius: 40% 60% 55% 45% / 45% 45% 55% 55%;
-      background: linear-gradient(135deg, var(--sun) 0%, var(--peach) 50%, var(--coral) 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 7rem;
-      border: 3px solid var(--ink);
-      box-shadow: 8px 8px 0 var(--ink);
-      animation: morphBlob 8s ease-in-out infinite;
-      position: relative;
     }
 
-    @keyframes morphBlob {
-      0%, 100% { border-radius: 40% 60% 55% 45% / 45% 45% 55% 55%; }
-      33% { border-radius: 55% 45% 40% 60% / 60% 55% 45% 40%; }
-      66% { border-radius: 60% 40% 60% 40% / 40% 60% 40% 60%; }
+    .books-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, 280px); 
+      gap: 30px;
+      justify-content: center; 
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
     }
 
-    .about-decoration {
-      position: absolute;
-      bottom: -20px; right: -20px;
-      width: 120px; height: 120px;
-      border-radius: 50%;
-      background: var(--mint);
-      border: 3px solid var(--ink);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2.5rem;
-      box-shadow: 4px 4px 0 var(--ink);
+    .book-card {
+      width: 100%;
+      max-width: 280px; 
+    }
+    /* < SOCIAL FOLLOW */
+    .social-links{
+      display:flex;
+      justify-content:center;
+      gap:34px;
     }
 
-    .about-text {
-    margin: 0 auto;
-    max-width: 520px;
-  }
-
-    .about-text .section-tag { background: var(--mint); color: var(--ink); }
-    .about-text .section-title { color: var(--ink); }
-    .about-text .section-title em { font-style: italic; color: var(--coral); }
-
-    .about-text p {
-      max-width: 520px;
-      font-size: 1.05rem;
-      line-height: 1.8;
-      color: #444;
-      margin-bottom: 1rem;
+    .social-item{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      text-decoration:none;
+      color:var(--ink);
+      font-size:0.85rem;
+      transition:all 0.25s ease;
     }
 
-    .about-stats {
-      display: flex;
-      gap: 2rem;
-      margin-top: 2rem;
-    }
-    .stat {
-      text-align: center;
-    }
-    .stat .num {
-      font-family: 'Fraunces', serif;
-      font-size: 2.5rem;
-      font-weight: 900;
-      color: var(--coral);
-      line-height: 1;
-    }
-    .stat .label {
-      font-size: 0.75rem;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #888;
-      margin-top: 0.25rem;
+    .social-item span{
+      margin-top:6px;
     }
 
-    /* ── CONTACT ── */
-    #contact {
-      background: linear-gradient(135deg, var(--sky) 0%, var(--mint) 100%);
-      text-align: center;
-      position: relative;
-      overflow: hidden;
+    .social-item:hover{
+      transform:translateY(-4px) scale(1.15);
     }
 
-    #contact::before {
-      content: '✉';
-      position: absolute;
-      font-size: 20rem;
-      opacity: 0.06;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-    }
-
-    #contact .section-tag { background: var(--ink); color: var(--cream); }
-    #contact .section-title { color: var(--ink); }
-
-    #contact p {
-      font-size: 1.1rem;
-      color: rgba(26,26,46,0.7);
-      max-width: 500px;
-      margin: 0 auto 2.5rem;
-      line-height: 1.7;
-    }
-
-    .contact-card {
-      display: inline-flex;
-      align-items: center;
-      gap: 1rem;
-      background: var(--ink);
-      color: var(--cream);
-      padding: 1.1rem 2rem;
-      border-radius: 999px;
-      font-weight: 800;
-      font-size: 1rem;
-      text-decoration: none;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      box-shadow: 5px 5px 0 rgba(26,26,46,0.3);
-    }
-    .contact-card:hover {
-      transform: translate(-2px, -2px);
-      box-shadow: 7px 7px 0 rgba(26,26,46,0.3);
-    }
-
-    /* ── FOOTER ── */
-    footer {
-      background: var(--ink);
-      color: rgba(255,251,240,0.5);
-      text-align: center;
-      padding: 2rem 5rem;
-      font-size: 0.85rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    footer .footer-brand {
-      font-family: 'Fraunces', serif;
-      font-size: 1.1rem;
-      font-weight: 900;
-      color: var(--cream);
-    }
-
-    footer a { color: var(--sun); text-decoration: none; }
-
-    /* ── SCROLL REVEAL ── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 900px) {
-      .hero { grid-template-columns: 1fr; padding: 7rem 2rem 3rem; text-align: center; }
-      .hero-sub { margin: 0 auto 2rem; }
-      .hero-visual { margin-top: 3rem; }
-      section { padding: 4rem 2rem; }
-      #about { grid-template-columns: 1fr; text-align: center; gap: 3rem;}
-      .about-avatar { margin: 0 auto; }
-      .about-stats { justify-content: center; }
-      nav { padding: 1rem 1.5rem; }
-      .nav-links { gap: 1rem; }
-      footer { flex-direction: column; gap: 0.5rem; padding: 1.5rem 2rem; }
-    }
-
-	@media (max-width: 600px) {
-	  nav {
-		padding: 1rem 1rem;
-		flex-wrap: wrap;
-		justify-content: center;
-		gap: 0.5rem;
-	  }
-
-	  .nav-logo {
-		font-size: 1.2rem;
-	  }
-
-	  .nav-links {
-		gap: 1rem;
-	  }
-
-	  .nav-links a {
-		font-size: 0.75rem;
-	  }
-	}
-	
-	/* ================= GLOBAL BOOKS SETTINGS (Apart from Media Queries) ================= */
-
-	.my-books-section {
-	  width: 100%;
-	  max-width: 1200px;
-	  margin: 0 auto;
-	  padding: 0 20px;
-	}
-
-	.book-card {
-	  width: 100%;
-	  max-width: none; 
-	  margin: 0;
-	}
-
-	.book-card-thumb {
-	  width: 100%;
-	  aspect-ratio: 3 / 4;
-	  display: flex;
-	  align-items: center;
-	  justify-content: center;
-	  padding: 8%;
-	  box-sizing: border-box;
-	  overflow: hidden;
-	  position: relative;
-	}
-
-	.book-card-thumb img {
-	  max-width: 100%;
-	  max-height: 100%;
-	  width: auto;
-	  height: auto;
-	  object-fit: contain;
-	  display: block;
-	  margin: 0 auto;
-	  border-radius: 4px;
-	}
-
-	.thumb-img {
-	  margin-left: 0 !important;
-	}
-
-  /* ===== BOOK MODAL ===== */
-  .book-modal {
-    display: none;
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.8);
-    z-index: 1000;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .modal-content {
-    position: relative;
-    max-width: 90%;
-    max-height: 90%;
-  }
-
-  .modal-close {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    font-size: 3rem;
-    color: #ffc400;
-    cursor: pointer;
-    z-index: 1001;
-  }
-
-  .modal-gallery {
-    display: flex;
-    overflow: hidden;
-    max-height: 80vh;
-  }
-
-  .modal-slide {
-    display: none;
-    max-width: 100%;
-    max-height: 80vh;
-    margin: auto;
-    object-fit: contain;
-  }
-
-  img {
-    -webkit-user-drag: none;
-    user-select: none;
-  }
-
-  .prev-slide, .next-slide {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(255,255,255,0.3);
-    border: none;
-    color: #ffc400;
-    font-size: 4rem;
-    padding: 0.5rem 1rem;
-    cursor: pointer;
-  }
-
-  .prev-slide { left: 0; }
-  .next-slide { right: 0; }
-
-	/* ================= RESPONSIVE SETTINGS ================= */
-
-		@media (max-width: 900px) {
-		  /* HERO */
-		  .hero-inner {
-			grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-			gap: 2rem;
-			text-align: center;
-		  }
-		  .hero { padding: 6rem 1.5rem 3rem; }
-		  .hero-title { font-size: 2.5rem; }		  
-		  .book-mockup { margin: auto; }
-		}
-
-		@media (max-width: 600px) {
-		  /* HERO FLEX - vertical */
-		  .hero-inner {
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			gap: 2rem;
-		  }
-		  .hero-text {
-			order: 1;
-			text-align: center;
-			max-width: 95%;
-		  }
-		  .hero-visual {
-			order: 2;
-			max-width: 80%;
-		  }
-		  .hero-title { font-size: clamp(1.8rem, 8vw, 3rem); }
-		}
-
-	@media (max-width: 500px) {
-	  .hero-title { font-size: 2rem; }
-	  .hero-sub { font-size: 1rem; }
-	  .hero-badge { font-size: 0.8rem; }
-	  
-	  .books-grid {
-		grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-		gap: 10px;
-	  }
-	}
-
-	.my-books-section {
-	  max-width: 1200px;
-	  margin-left: auto !important;
-	  margin-right: auto !important;
-	  padding: 0 20px;
-	  width: 100%;
-	}
-
-	.books-grid {
-	  display: grid;
-	  grid-template-columns: repeat(auto-fill, 280px); 
-	  gap: 30px;
-	  justify-content: center; 
-	  width: 100%;
-	  max-width: 1200px;
-	  margin: 0 auto;
-	}
-
-	.book-card {
-	  width: 100%;
-	  max-width: 280px; 
-	}
-
+    .social-item[aria-label="Pinterest"]:hover{ color:#E60023; }
+    .social-item[aria-label="YouTube"]:hover{ color:#FF0000; }
+    .social-item[aria-label="Instagram"]:hover{ color:#C13584; }
+    .social-item[aria-label="TikTok"]:hover{ color:#111; }
   </style>
 </head>
 
@@ -942,6 +989,7 @@
   <!-- NAV -->
   <nav>
     <a href="#" class="nav-logo">
+      <img src="images/PuzzleInk logo - all black - no text.png" alt="PuzzleInk Logo" class="nav-logo-img">
       PuzzleInk <span class="dot"></span>
     </a>
     <ul class="nav-links">
@@ -949,69 +997,75 @@
       <li><a href="#about">About</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
-  </nav>
+  </nav> 
 
   <!-- HERO -->
-	<section class="hero">
+    <section class="hero">
 
-	  <div class="hero-bg-blobs">
-		<div class="blob blob-1"></div>
-		<div class="blob blob-2"></div>
-		<div class="blob blob-3"></div>
-		<div class="blob blob-4"></div>
-		<div class="blob blob-5"></div>
-	  </div>
+      <div class="hero-bg-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+        <div class="blob blob-4"></div>
+        <div class="blob blob-5"></div>
+      </div>
 
-	  <div class="hero-inner">
+      <div class="hero-inner">
 
-		<div class="hero-text">
+        <div class="hero-text">
 
-		  <h1 class="hero-title">
-			Color your<br>
-			world <span class="highlight">joyful</span>
-		  </h1>
-		  <p class="hero-sub">
-			Handcrafted coloring books full of imagination, adventure, and endless fun — for kids and curious souls of all ages.
-		  </p>
-		  <a href="#books" class="hero-cta">
-			Browse Books
-			<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-			  <path d="M5 12h14M12 5l7 7-7 7"/>
-			</svg>
-		  </a>
-		</div>
+          <div class="hero-label">
+            PUZZLEINK STUDIO
+          </div>
 
-		<div class="hero-visual">
-		  <div class="floating-emojis">
-			<span class="fe fe-1">🐾</span>
-			<span class="fe fe-2">⭐</span>
-			<span class="fe fe-3">🌈</span>
-			<span class="fe fe-4">✏️</span>
-		  </div>
+          <h1 class="hero-title">
+            Where ink<br>
+            becomes <span class="highlight">adventure</span>
+          </h1>
 
-		  <div class="book-mockup">
-			<a href="https://www.amazon.com/dp/B0GRQYHRQK" target="_blank" style="text-decoration: none; color: inherit; display: block;">
-			  <div class="book-spine"></div>
+          <p class="hero-sub">
+            Handcrafted coloring books filled with imagination, playful stories, and endless pages waiting for color — for kids and curious minds of all ages.
+          </p>
 
-			  <img src="images/corgi-cover.png "
-				   alt="Corgi coloring book for kids ages 4-7"
-				   class="thumb-img"
-           loading="lazy"
-				   style="width: 100%; height: auto; max-height: 300px; display: block; border-radius: 0 5px 5px 0;">
+          <a href="#books" class="hero-cta">
+            Discover Books
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M5 12h14M12 5l7 7-7 7"/>
+            </svg>
+          </a>
 
-			  <div class="book-info">
-				<div class="book-label">Featured Book</div>
-				<h3>Happy Paws: The Little Corgi's Big Adventures</h3>
-				<div class="stars">★★★★★</div>
-			  </div>
-			</a>
-		  </div>
+        </div>
 
-		</div>
+        <div class="hero-visual">
+          <div class="floating-emojis">
+            <span class="fe fe-1">🐾</span>
+            <span class="fe fe-2">⭐</span>
+            <span class="fe fe-3">🌈</span>
+            <span class="fe fe-4">✏️</span>
+          </div>
 
-	  </div>
+          <div class="book-mockup">
+            <a href="https://www.amazon.com/dp/B0GRQYHRQK" target="_blank" style="text-decoration: none; color: inherit; display: block;">
+              <div class="book-spine"></div>
 
-	</section>
+              <img src="images/corgi-cover.png"
+                  alt="Cover of Happy Paws coloring book featuring a corgi"
+                  class="thumb-img"
+                  loading="lazy"
+                  style="width: 100%; height: auto; max-height: 300px; display: block; border-radius: 0 5px 5px 0;">
+
+              <div class="book-info">
+                <div class="book-label">Featured Book</div>
+                <h3>Happy Paws: The Little Corgi's Big Adventures</h3>
+                <div class="stars">★★★★★</div>
+              </div>
+            </a>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
 
   <!-- BOOKS -->
   <section id="books">
@@ -1019,193 +1073,236 @@
       <h2 class="section-title">Stories waiting<br>to be <em>colored</em></h2>
     </div>
   
-<!-- Główne filtry -->
-<div class="book-filters">
-  <button class="filter-btn all-btn" data-filter="all">All Books</button>
-  <button class="filter-btn" data-filter="kids">For Kids</button>
-  <button class="filter-btn" data-filter="adults">For Adults</button>
-  <button class="filter-btn" data-filter="coming-soon">Coming Soon</button>
-</div>
-
-<!-- Pośrednie subfiltry dla Kids -->
-<div class="sub-filters" data-parent="kids" style="display:none;">
-  <button class="sub-filter-btn all-btn" data-sub="all">All Kids</button>
-  <button class="sub-filter-btn" data-sub="coloring">Coloring Books</button>
-  <!-- <button class="sub-filter-btn" data-sub="puzzle">Puzzle Books</button> -->
-</div>
-
-<!-- Pośrednie subfiltry dla Adults -->
-<div class="sub-filters" data-parent="adults" style="display:none;">
-  <button class="sub-filter-btn all-btn" data-sub="all">All Adults</button>
-  <!-- <button class="sub-filter-btn" data-sub="coloring">Coloring Books</button> -->
-  <!-- <button class="sub-filter-btn" data-sub="puzzle">Puzzle Books</button> -->
-</div>
-
-<!-- Sub-subkategorie -->
-<div class="sub-sub-filters" data-parent="kids" data-super="coloring" style="display:none;">
-  <button class="sub-sub-filter-btn" data-subsub="corgi">Corgi</button>
-  <!-- <button class="sub-sub-filter-btn" data-subsub="kitty">Kitty</button> -->
-</div>
-
-<div class="sub-sub-filters" data-parent="kids" data-super="puzzle" style="display:none;">
-  <button class="sub-sub-filter-btn" data-subsub="maze">Maze</button>
-  <button class="sub-sub-filter-btn" data-subsub="matching">Matching</button>
-</div>
-
-<div class="sub-sub-filters" data-parent="adults" data-super="coloring" style="display:none;">
-  <button class="sub-sub-filter-btn" data-subsub="mandala">Mandala</button>
-</div>
-
-    <div class="books-grid">
-  <!-- BOOK CARD -->
-   <!-- CORGI1 BOOK -->
-<div id="corgi-coloring-book" class="book-card reveal"      data-category="kids" data-sub="coloring" data-subsub="corgi" style="transition-delay:0.001s">
-  <div class="book-card-thumb open-gallery" 
-       style="cursor: pointer; background: linear-gradient(145deg, #FFF3CD 0%, #FFD93D 40%, #FF9F43 80%, #FF6B6B 100%);">
-    
-    <img src="images/corgi-cover.png" alt="Corgi coloring book for kids ages 4-7" class="thumb-img" loading="lazy" style="width: 100%; height: 100%; object-fit: contain !important;">
-    <span class="thumb-label">Age 4+</span>
-
-    <div class="hidden-gallery" style="display:none;">
-      <img src="images/corgi-cover.png" class="modal-slide" alt="Strona 1" loading="lazy">
-      <img src="images/corgi-1.png" class="modal-slide" alt="Strona 2" loading="lazy">
-      <img src="images/corgi-2.png" class="modal-slide" alt="Strona 3" loading="lazy">
-      <img src="images/corgi-3.png" class="modal-slide" alt="Strona 4" loading="lazy">
-    </div>
+  <!-- Główne filtry -->
+  <div class="book-filters">
+    <button class="filter-btn all-btn" data-filter="all">All Books</button>
+    <button class="filter-btn" data-filter="kids">For Kids</button>
+    <button class="filter-btn" data-filter="adults">For Adults</button>
+    <button class="filter-btn" data-filter="coming-soon">Coming Soon</button>
   </div>
-  <div class="book-card-body">
-    <div class="card-genre">🐾 Kids · Adventure</div>
-    <h4>Happy Paws: The Little Corgi's Big Adventures</h4>
-    <p>Cute corgi puppies, easy shapes, perfect for preschool and early school kids.
-20 simple illustrations designed for ages 4+</p>
-    <a href="https://www.amazon.com/dp/B0GRQYHRQK" class="btn-amazon" target="_blank">Buy Now on Amazon</a>
+
+  <!-- Pośrednie subfiltry dla Kids -->
+  <div class="sub-filters" data-parent="kids" style="display:none;">
+    <button class="sub-filter-btn all-btn" data-sub="all">All Kids</button>
+    <button class="sub-filter-btn" data-sub="coloring">Coloring Books</button>
+    <!-- <button class="sub-filter-btn" data-sub="puzzle">Puzzle Books</button> -->
   </div>
-</div>
 
-<!-- KIDS SOON BOOK -->
-<div class="book-card reveal" data-category="kids" data-sub="soon" style="transition-delay:0.1s">
-  <div class="book-card-thumb" 
-       style="background: linear-gradient(145deg, #C3F0CA 0%, #6BCB77 50%, #4ECDC4 100%);">
-    
-    <img src="images/soon.jpg" alt="Soon" class="thumb-img" loading="lazy" style="width: 100%; height: 100%; object-fit: contain !important;">
-    <span class="thumb-label">Coming Soon</span>
-    
-    <div class="hidden-gallery" style="display:none;"></div>
+  <!-- Pośrednie subfiltry dla Adults -->
+  <div class="sub-filters" data-parent="adults" style="display:none;">
+    <button class="sub-filter-btn all-btn" data-sub="all">All Adults</button>
+    <!-- <button class="sub-filter-btn" data-sub="coloring">Coloring Books</button> -->
+    <!-- <button class="sub-filter-btn" data-sub="puzzle">Puzzle Books</button> -->
   </div>
-  <div class="book-card-body">
-    <div class="card-genre">🌸 New Title</div>
-    <h4>Next Kids Adventure</h4>
-    <p>A brand new coloring book is on its way.</p>
-    <a href="#contact" class="btn-amazon">🔔 Get Notified</a>
+
+  <!-- Sub-subkategorie -->
+  <div class="sub-sub-filters" data-parent="kids" data-super="coloring" style="display:none;">
+    <button class="sub-sub-filter-btn" data-subsub="corgi">Corgi</button>
+    <!-- <button class="sub-sub-filter-btn" data-subsub="kitty">Kitty</button> -->
   </div>
-</div>
 
-<!-- ADULTS SOON BOOK -->
-<div class="book-card reveal" data-category="adults" data-sub="soon" style="transition-delay:0.2s">
-  <div class="book-card-thumb" 
-       style="background: linear-gradient(145deg, #c3d5f0 0%, #6b71cb 50%, #854ecd 100%);">
-    
-    <img src="images/soon.jpg" alt="Soon" class="thumb-img" loading="lazy" style="width: 100%; height: 100%; object-fit: contain !important;">
-    <span class="thumb-label">Coming Soon</span>
-    
-    <div class="hidden-gallery" style="display:none;"></div>
+  <div class="sub-sub-filters" data-parent="kids" data-super="puzzle" style="display:none;">
+    <button class="sub-sub-filter-btn" data-subsub="maze">Maze</button>
+    <button class="sub-sub-filter-btn" data-subsub="matching">Matching</button>
   </div>
-  <div class="book-card-body">
-    <div class="card-genre">🌸 New Title</div>
-    <h4>Next Adult Adventure</h4>
-    <p>A brand new coloring book is on its way.</p>
-    <a href="#contact" class="btn-amazon">🔔 Get Notified</a>
+
+  <div class="sub-sub-filters" data-parent="adults" data-super="coloring" style="display:none;">
+    <button class="sub-sub-filter-btn" data-subsub="mandala">Mandala</button>
   </div>
-</div>
 
-    </div>
-  </section>
+      <div class="books-grid">
+    <!-- BOOK CARD -->
+    <!-- CORGI1 BOOK -->
+  <div id="corgi-coloring-book" class="book-card reveal"      data-category="kids" data-sub="coloring" data-subsub="corgi" style="transition-delay:0.001s">
+    <div class="book-card-thumb open-gallery" 
+        style="cursor: pointer; background: linear-gradient(145deg, #FFF3CD 0%, #FFD93D 40%, #FF9F43 80%, #FF6B6B 100%);">
+      
+      <img src="images/corgi-cover.png" alt="Corgi coloring book for kids ages 4-7" class="thumb-img" loading="lazy" style="width: 100%; height: 100%; object-fit: contain !important;">
+      <span class="thumb-label">Age 4+</span>
 
-  <!-- ABOUT -->
-  <section id="about">
-    <div class="about-visual reveal">
-      <div class="about-avatar"><img src="images/avatar.png" alt="Corgi" class="thumb-img" style="width: 100%; height: 100%; object-fit: contain !important;"></div>
-    </div>
-
-    <div class="about-text">
-      <h2 class="section-title">Hi, I'm <em>Noah</em> —<br>and I live to color</h2>
-      <p>
-        I'm a passionate illustrator and storyteller who believes that coloring is one of life's greatest joys. Every page I design is a small adventure — a world waiting for your personal touch.
-      </p>
-      <p>
-        My coloring books are crafted with love, creativity, and a dash of magic, designed to spark imagination in children and bring calm to adults who never want to stop playing.
-      </p>
-      <p>
-        All my books are available on Amazon — easy to order, perfect to gift, and made to be filled with color. 🌈
-      </p>
-
-      <div class="about-stats">
-        <div class="stat">
-          <div class="num">1+</div>
-          <div class="label">Books Published</div>
-        </div>
-        <div class="stat">
-          <div class="num">20+</div>
-          <div class="label">Pages per Book</div>
-        </div>
-        <div class="stat">
-          <div class="num">∞</div>
-          <div class="label">Joy Delivered</div>
-        </div>
+      <div class="hidden-gallery" style="display:none;">
+        <img src="images/corgi-cover.png" class="modal-slide" alt="Strona 1" loading="lazy">
+        <img src="images/corgi-1.png" class="modal-slide" alt="Strona 2" loading="lazy">
+        <img src="images/corgi-2.png" class="modal-slide" alt="Strona 3" loading="lazy">
+        <img src="images/corgi-3.png" class="modal-slide" alt="Strona 4" loading="lazy">
       </div>
     </div>
-  </section>
-
-  <!-- CONTACT -->
-  <section id="contact">
-    <div class="reveal">
-      <h2 class="section-title">Let's talk colors!</h2>
-      <p>
-        Questions about my books, collaboration ideas, or just want to say hello? Drop me a message — I'd love to hear from you!
-      </p>
-      <a href="mailto:contact@puzzleink.org" id="contact-btn" class="contact-card">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-          <polyline points="22,6 12,13 2,6"/>
-        </svg>
-        contact@puzzleink.org
-      </a>
+    <div class="book-card-body">
+      <div class="card-genre">🐾 Kids · Adventure</div>
+      <h4>Happy Paws: The Little Corgi's Big Adventures</h4>
+      <p>Cute corgi puppies, easy shapes, perfect for preschool and early school kids.
+  20 simple illustrations designed for ages 4+</p>
+      <a href="https://www.amazon.com/dp/B0GRQYHRQK" class="btn-amazon" target="_blank">Buy Now on Amazon</a>
     </div>
-
-  </section>
-
-  <!-- FOOTER -->
-  <footer>
-    <div class="footer-brand">Noah Colorjoy</div>
-    <div>© 2025 Noah Colorjoy · All rights reserved<br>The website does not use cookies or collect users' personal data.</div>
-    <div>Made with 🎨 & lots of color</div>
-  </footer>
-
-  <script>
-    // Scroll reveal
-    const revealEls = document.querySelectorAll('.reveal');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(el => {
-        if (el.isIntersecting) {
-          el.target.classList.add('visible');
-        }
-      });
-    }, { threshold: 0.12 });
-    revealEls.forEach(el => observer.observe(el));
-  </script>
-
-  <!-- Book Preview Modal -->
-  <div id="book-modal" class="book-modal">
-  <div class="modal-content">
-    <span class="modal-close">&times;</span>
-    
-    <div class="modal-gallery" id="modal-slides-container"></div>
-    
-    <button class="prev-slide">&#10094;</button>
-    <button class="next-slide">&#10095;</button>
   </div>
-</div>
 
-<script src="script.js"></script>
+  <!-- KIDS SOON BOOK -->
+  <div class="book-card reveal" data-category="kids" data-sub="soon" style="transition-delay:0.1s">
+    <div class="book-card-thumb" 
+        style="background: linear-gradient(145deg, #C3F0CA 0%, #6BCB77 50%, #4ECDC4 100%);">
+      
+      <img src="images/soon.jpg" alt="Soon" class="thumb-img" loading="lazy" style="width: 100%; height: 100%; object-fit: contain !important;">
+      <span class="thumb-label">Coming Soon</span>
+      
+      <div class="hidden-gallery" style="display:none;"></div>
+    </div>
+    <div class="book-card-body">
+      <div class="card-genre">🌸 New Title</div>
+      <h4>Next Kids Adventure</h4>
+      <p>A brand new coloring book is on its way.</p>
+      <a href="#contact" class="btn-amazon">🔔 Get Notified</a>
+    </div>
+  </div>
+
+  <!-- ADULTS SOON BOOK -->
+  <div class="book-card reveal" data-category="adults" data-sub="soon" style="transition-delay:0.2s">
+    <div class="book-card-thumb" 
+        style="background: linear-gradient(145deg, #c3d5f0 0%, #6b71cb 50%, #854ecd 100%);">
+      
+      <img src="images/soon.jpg" alt="Soon" class="thumb-img" loading="lazy" style="width: 100%; height: 100%; object-fit: contain !important;">
+      <span class="thumb-label">Coming Soon</span>
+      
+      <div class="hidden-gallery" style="display:none;"></div>
+    </div>
+    <div class="book-card-body">
+      <div class="card-genre">🌸 New Title</div>
+      <h4>Next Adult Adventure</h4>
+      <p>A brand new coloring book is on its way.</p>
+      <a href="#contact" class="btn-amazon">🔔 Get Notified</a>
+    </div>
+  </div>
+
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="about-visual reveal">
+        <div class="about-avatar"><img src="images/avatar.png" alt="Corgi" class="thumb-img" style="width: 100%; height: 100%; object-fit: contain !important;"></div>
+      </div>
+
+      <div class="about-text">
+        <h2 class="section-title">Hi, I'm <em>Noah</em> —<br>and I live to color</h2>
+        <p>
+          I'm a passionate illustrator and storyteller who believes that coloring is one of life's greatest joys. Every page I design is a small adventure — a world waiting for your personal touch.
+        </p>
+        <p>
+          My coloring books are crafted with love, creativity, and a dash of magic, designed to spark imagination in children and bring calm to adults who never want to stop playing.
+        </p>
+        <p>
+          All my books are available on Amazon — easy to order, perfect to gift, and made to be filled with color. 🌈
+        </p>
+
+        <div class="about-stats">
+          <div class="stat">
+            <div class="num">1+</div>
+            <div class="label">Books Published</div>
+          </div>
+          <div class="stat">
+            <div class="num">20+</div>
+            <div class="label">Pages per Book</div>
+          </div>
+          <div class="stat">
+            <div class="num">∞</div>
+            <div class="label">Joy Delivered</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <div class="reveal">
+        <h2 class="section-title">Let's talk colors!</h2>
+        <p>
+          Questions about my books, collaboration ideas, or just want to say hello? Drop me a message — I'd love to hear from you!
+        </p>
+        <a href="mailto:contact@puzzleink.org" id="contact-btn" class="contact-card">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
+          contact@puzzleink.org
+        </a>
+      </div>
+      <!-- SOCIAL FOLLOW -->
+      <div class="social-follow">
+
+        <p class="follow-text">
+          <br>Follow PuzzleInk for colorful updates, behind-the-scenes peeks, and a daily dose of joy!
+        </p>
+
+        <div class="social-links">
+
+          <!-- Pinterest -->
+          <a href="http://pinterest.com/puzzleink/" target="_blank" aria-label="Pinterest" class="social-item">
+            <svg viewBox="0 0 24 24" width="40" height="40" fill="currentColor">
+              <path d="M12 0C5.37 0 0 5.37 0 12c0 4.99 3.05 9.26 7.38 11.09-.1-.94-.19-2.39.04-3.42.21-.91 1.34-5.81 1.34-5.81s-.34-.67-.34-1.65c0-1.55.9-2.7 2.02-2.7.95 0 1.41.71 1.41 1.56 0 .95-.61 2.37-.92 3.69-.26 1.11.55 2.01 1.64 2.01 1.97 0 3.49-2.08 3.49-5.08 0-2.66-1.91-4.52-4.63-4.52-3.15 0-5 2.36-5 4.8 0 .95.37 1.98.83 2.54.09.11.1.21.07.32-.08.35-.27 1.11-.31 1.27-.05.21-.16.26-.37.16-1.39-.64-2.26-2.66-2.26-4.29 0-3.49 2.54-6.7 7.34-6.7 3.85 0 6.84 2.74 6.84 6.4 0 3.82-2.41 6.9-5.76 6.9-1.12 0-2.17-.58-2.53-1.27l-.69 2.63c-.25.97-.92 2.18-1.37 2.92C9.95 23.84 10.96 24 12 24c6.63 0 12-5.37 12-12S18.63 0 12 0z"/>
+            </svg>
+            <span>Pinterest</span>
+          </a>
+
+          <!-- YouTube -->
+          <a href="https://www.youtube.com/@puzzleink" target="_blank" aria-label="YouTube" class="social-item">
+            <svg viewBox="0 0 24 24" width="40" height="40" fill="currentColor">
+              <path d="M23.5 6.2s-.23-1.64-.94-2.36c-.9-.94-1.9-.94-2.36-1C16.9 2.5 12 2.5 12 2.5h-.01s-4.9 0-8.2.34c-.46.06-1.46.06-2.36 1C.72 4.56.5 6.2.5 6.2S.25 8.1.25 10v1.99c0 1.9.25 3.8.25 3.8s.23 1.64.94 2.36c.9.94 2.08.91 2.61 1.01 1.89.18 7.95.34 7.95.34s4.9-.01 8.2-.35c.46-.06 1.46-.06 2.36-1 .71-.72.94-2.36.94-2.36s.25-1.9.25-3.8V10c0-1.9-.25-3.8-.25-3.8zM9.75 14.57V8.8l5.51 2.88-5.51 2.89z"/>
+            </svg>
+            <span>YouTube</span>
+          </a>
+
+          <!-- Instagram -->
+          <a href="https://www.instagram.com/puzzleink.official/" target="_blank" aria-label="Instagram" class="social-item">
+            <svg viewBox="0 0 24 24" width="40" height="40" fill="currentColor">
+              <path d="M7.75 2C4.57 2 2 4.57 2 7.75v8.5C2 19.43 4.57 22 7.75 22h8.5C19.43 22 22 19.43 22 16.25v-8.5C22 4.57 19.43 2 16.25 2h-8.5zm4.25 5.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 0 1 12 7.5zm0 7.2A2.7 2.7 0 1 0 9.3 12 2.7 2.7 0 0 0 12 14.7zm4.8-7.7a1.05 1.05 0 1 1-1.05-1.05A1.05 1.05 0 0 1 16.8 7z"/>
+            </svg>
+            <span>Instagram</span>
+          </a>
+
+          <!-- TikTok -->
+          <a href="https://www.tiktok.com/@puzzleink.org" target="_blank" aria-label="TikTok" class="social-item">
+            <svg viewBox="0 0 24 24" width="40" height="40" fill="currentColor">
+              <path d="M16.5 0h-3v16.2a3.3 3.3 0 1 1-2.3-3.1V10a6.3 6.3 0 1 0 5.3 6.2V8.4c1.4 1.1 3.2 1.7 5 1.7V6.9c-1.4 0-2.8-.4-3.9-1.2A6.5 6.5 0 0 1 16.5 0z"/>
+            </svg>
+            <span>TikTok</span>
+          </a>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-brand">Noah Colorjoy</div>
+      <div>© 2025 Noah Colorjoy · All rights reserved<br>The website does not use cookies or collect users' personal data.</div>
+      <div>Made with 🎨 & lots of color</div>
+    </footer>
+
+    <script>
+      // Scroll reveal
+      const revealEls = document.querySelectorAll('.reveal');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(el => {
+          if (el.isIntersecting) {
+            el.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.12 });
+      revealEls.forEach(el => observer.observe(el));
+    </script>
+
+    <!-- Book Preview Modal -->
+    <div id="book-modal" class="book-modal">
+    <div class="modal-content">
+      <span class="modal-close">&times;</span>
+      
+      <div class="modal-gallery" id="modal-slides-container"></div>
+      
+      <button class="prev-slide">&#10094;</button>
+      <button class="next-slide">&#10095;</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
