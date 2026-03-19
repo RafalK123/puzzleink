@@ -173,7 +173,13 @@ document.addEventListener("DOMContentLoaded", function () {
         });
       } else {
         bookCards.forEach(c => {
-          c.style.display = (c.dataset.category === parentCategory && c.dataset.sub === parentSub && c.dataset.subsub === subsub) ? '' : 'none';
+          const subsubs = (c.dataset.subsub || "").split(',').map(s => s.trim());
+
+          c.style.display = (
+            c.dataset.category === parentCategory &&
+            c.dataset.sub === parentSub &&
+            subsubs.includes(subsub)
+          ) ? '' : 'none';
         });
       }
     });
