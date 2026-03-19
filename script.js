@@ -185,7 +185,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // ===== Automatyczne włączenie All Books przy wejściu na stronę =====
+  // ===== Automatyczne włączenie All Books przy wejściu na stronę główną =====
   const allBooksBtn = document.querySelector('.filter-btn.all-btn[data-filter="all"]');
   if (allBooksBtn) allBooksBtn.click();
 });
