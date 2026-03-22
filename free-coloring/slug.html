@@ -95,8 +95,10 @@ button.secondary{
 <div id="description" class="description"></div>
 
 <div class="more">
-Discover more free printable coloring pages 👉
-<a href="/free-coloring/">Browse the full gallery</a>
+Love this coloring page? Get the full collection 👉
+<a href="https://amazon.com/author/puzzleink" target="_blank" rel="noopener">
+Explore all PuzzleInk books on Amazon
+</a>
 </div>
 
 <!-- PODGLĄD OBRAZKA NA SAMYM DOLE -->
@@ -111,7 +113,7 @@ const params = new URLSearchParams(window.location.search);
 const slug = params.get("file");
 
 if(!slug){
-    location.href="/free-coloring/";
+    location.href="https://amazon.com/author/puzzleink";
 }
 
 const file = slug + ".pdf";
@@ -132,7 +134,7 @@ document.getElementById("metaDesc").content =
 
 document.getElementById("description").innerText =
     "This free printable " + titleText +
-    " Coloring Page is perfect for kids, preschool activities and Easter crafts. " +
+    " is perfect for kids, preschool activities and Easter crafts. " +
     "Download the printable PDF or JPG and start coloring!";
 
 const url = "https://files.puzzleink.org/" + file;
