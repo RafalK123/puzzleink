@@ -70,6 +70,12 @@ let filteredFiles = [];
 let itemsPerPage = 20;
 let currentIndex = 0;
 
+// slug → ImageBitmap (żeby nie renderować PDF drugi raz)
+const thumbCache = new Map();
+
+// slug → element DOM karty (żeby nie budować DOM drugi raz)
+const cardCache = new Map();
+
 async function load() {
     try {
         const res = await fetch("/api/colorings");
@@ -91,6 +97,13 @@ function renderGrid() {
 
     for (const file of nextItems) {
         const slug = file.replace(".pdf", "");
+
+        // Jeśli karta już istnieje w cache — po prostu ją przywróć
+        if (cardCache.has(slug)) {
+            grid.appendChild(cardCache.get(slug));
+            continue;
+        }
+
         const title = formatTitle(file);
         const url = "/free-coloring/slug.html?file=" + slug;
 
@@ -108,6 +121,8 @@ function renderGrid() {
         card.appendChild(link);
         grid.appendChild(card);
 
+        cardCache.set(slug, card);
+
         generateThumb(file, canvas);
     }
 
@@ -124,23 +139,42 @@ function renderGrid() {
 }
 
 async function generateThumb(file, canvas) {
+    const slug = file.replace(".pdf", "");
+
+    // Jeśli miniatura już wyrenderowana — maluj z cache, zero pobierania
+    if (thumbCache.has(slug)) {
+        const bitmap = thumbCache.get(slug);
+        canvas.width = bitmap.width;
+        canvas.height = bitmap.height;
+        canvas.getContext("2d").drawImage(bitmap, 0, 0);
+        return;
+    }
+
     const url = "https://files.puzzleink.org/" + file;
     try {
-        const pdf = await pdfjsLib.getDocument({url: url, disableRange: true, disableStream: true}).promise;
+        const pdf = await pdfjsLib.getDocument({ url, disableRange: true, disableStream: true }).promise;
         const page = await pdf.getPage(1);
         const viewport = page.getViewport({ scale: 0.8 });
-        canvas.width = viewport.width;
-        canvas.height = viewport.height;
+
+        const offscreen = document.createElement("canvas");
+        offscreen.width = viewport.width;
+        offscreen.height = viewport.height;
         await page.render({
-            canvasContext: canvas.getContext("2d"),
-            viewport: viewport
+            canvasContext: offscreen.getContext("2d"),
+            viewport
         }).promise;
+
+        const bitmap = await createImageBitmap(offscreen);
+        thumbCache.set(slug, bitmap);
+
+        canvas.width = bitmap.width;
+        canvas.height = bitmap.height;
+        canvas.getContext("2d").drawImage(bitmap, 0, 0);
     } catch (e) {
         console.error("Błąd PDF (" + file + "):", e);
     }
 }
 
-// SEARCH
 document.getElementById("search").addEventListener("input", e => {
     const query = e.target.value.toLowerCase();
     filteredFiles = allFiles.filter(f => f.toLowerCase().includes(query));
@@ -148,16 +182,13 @@ document.getElementById("search").addEventListener("input", e => {
     renderGrid();
 });
 
-// CLEAR SEARCH
 document.getElementById("clearSearch").addEventListener("click", () => {
-    const input = document.getElementById("search");
-    input.value = "";
+    document.getElementById("search").value = "";
     filteredFiles = allFiles;
     currentIndex = 0;
     renderGrid();
 });
 
-// LOAD MORE
 document.getElementById("loadMore").addEventListener("click", () => {
     renderGrid();
 });
